@@ -15,3 +15,8 @@ Uploaded soon:
 
 * [caltech birds](http://www.vision.caltech.edu/visipedia/CUB-200-2011.html)
 * [standford cars](https://ai.stanford.edu/~jkrause/cars/car_dataset.html)
+
+
+### tiny ImageNet
+
+An example of how to use tiny ImagetNet is provided in the file check_tiny_imagenet.py
