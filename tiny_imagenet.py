@@ -35,7 +35,7 @@ def download_and_extract_archive(url, download_root, extract_root=None, filename
 	if not filename:
 		filename = os.path.basename(url)
 
-	#download_url(url, download_root, filename, md5)
+	download_url(url, download_root, filename, md5)
 
 	archive = os.path.join(download_root, filename)
 
@@ -210,11 +210,10 @@ class tiny_ImageNet(ImageFolder):
 		return True
 
 	def _download(self):
-		'''
 		if self._check_integrity():
 			print('Files already downloaded and verified')
 			return
-		'''
+		
 		download_and_extract_archive(self.url, self.directory, filename=self.filename+'.zip', md5=self.md5sum)
 
 
