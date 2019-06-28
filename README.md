@@ -23,4 +23,28 @@ An example of how to use tiny ImagetNet is provided in the file check_tiny_image
 
 ### Birds
 
-An example of how to use Birds is provided in the file check_birds.py
+This dataset contains images of birds with different shapes. The dataset contain many information that can be used for different task, but the datasets provided are thought for object segmentation and classification. An example of how to use Birds is provided in the file check_birds.py
+
+#### Classification: 
+
+For classification each image is reshaped to have the same size.  The set of operations performed are: 
+
+* 1) Crop the images using the bounding box provided
+
+* 2) Pad the images to have a square size, using a padding specified as argument. This operation is done using numpy.pad, thus one can choose any option available under this method
+
+* 3) Reshape images to user-specified image shape using an interpolation method which is provided as argument.
+
+
+For effiency, the dataset is processed one and store in a folder from which after images are loaded. A checkpoint is introduced just in case something is wrong during this processing step, thus ensuring that it will correctly finished. If there is a problem during this step, you will be asked to erase the folder where your processed data is placed.
+
+With this processing you can get competitive results on this task ~80% using pretrained models on ImageNet.
+
+
+####Object detection: 
+
+In this case the code returns the images, the labels and a numpy array containing the bounding boxes.
+
+The dataset contains a method: dataset.default_collate which can be passed directly to a dataloader.
+
+

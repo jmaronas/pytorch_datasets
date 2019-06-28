@@ -53,24 +53,6 @@ def extract_archive(from_path, to_path=None, remove_finished=False):
 		os.remove(from_path)
 
 
-def make_dataset_withbbox(dir, class_to_idx, extensions,bounding_box):
-	images = []
-	dir = os.path.expanduser(dir)
-	for target in sorted(class_to_idx.keys()):
-		d = os.path.join(dir, target)
-		if not os.path.isdir(d):
-			continue
-
-
-		for root, _, fnames in sorted(os.walk(d)):
-			for fname in sorted(fnames):
-				if has_file_allowed_extension(fname, extensions):
-					idx=int(fname.split('.')[0])
-					path = os.path.join(root, fname)
-					item = (path, class_to_idx[target],bounding_box[idx,:])
-					images.append(item)
-	return images
-
 
 def download_and_extract_archive(url, download_root, extract_root=None, filename=None, md5=None, remove_finished=False):
 	download_root = os.path.expanduser(download_root)
@@ -88,6 +70,23 @@ def download_and_extract_archive(url, download_root, extract_root=None, filename
 
 
 class birds_caltech_2011(ImageFolder):
+	"""`Caltech 2011 Birds <http://www.vision.caltech.edu/visipedia/CUB-200-2011.html/>`_ Dataset.
+	    Args:
+        	root (string): Root directory of dataset where directory
+	            ``CUB_200_2011.tar.gz`` exists or will be saved to if download is set to True.
+        	partition (string): Select partition: train/test.
+		image_shape (int,optional): Number specifying the shape of the final image, default is 300
+		interpolation(string,optional): Which interpolation is used when resize to image_shape is performed (default 'bilinear')
+		padding(string,optional): which kind of padding is used, see numpy.pad (default wrap)
+        	transform (callable, optional): A function/transform that takes in an PIL image
+	            and returns a transformed version. E.g, ``transforms.RandomCrop``
+	        target_transform (callable, optional): A function/transform that takes in the
+        	    target and transforms it.
+	        download (bool, optional): If true, downloads the dataset from the internet and
+        	    puts it in root directory. If dataset is already downloaded, it is not
+	            downloaded again.
+	"""
+
 
 	def __init__(self,directory,partition, image_shape=300,interpolation='bilinear',padding='wrap', download=True, transform=None, target_transform=None):
 
@@ -98,7 +97,7 @@ class birds_caltech_2011(ImageFolder):
 		self.url='http://www.vision.caltech.edu/visipedia-data/CUB-200-2011/CUB_200_2011.tgz'	
 		self.filename='CUB_200_2011'
 		self.directory=directory
-		self.processed_directory=os.path.join(self.directory,self.filename,'processed',str(image_shape))
+		self.processed_directory=os.path.join(self.directory,self.filename,'processed',str(image_shape),interpolation,padding)
 		self.partition=partition
 		self.image_shape=image_shape
 		self.interpolation=interpolation
@@ -153,6 +152,7 @@ class birds_caltech_2011(ImageFolder):
 		file_images=os.path.join(self.directory,self.filename,'images.txt')
 		file_train_test=os.path.join(self.directory,self.filename,'train_test_split.txt')
 		file_classes=os.path.join(self.directory,self.filename,'image_class_labels.txt')
+		file_bbox=os.path.join(self.directory,self.filename,'bounding_boxes.txt')
 		image_directory=os.path.join(self.directory,self.filename,'images')
 
 		train_dir=os.path.join(self.processed_directory,'train')
@@ -160,20 +160,20 @@ class birds_caltech_2011(ImageFolder):
 		os.makedirs(train_dir)
 		os.makedirs(test_dir)
 
-		if self.return_bounding_box:
-			train_bbox = -1*numpy.ones((5994,4),dtype=numpy.float32)
-			test_bbox = -1*numpy.ones((5794,4),dtype=numpy.float32)
-
 		for i in range(200):		
 			os.makedirs(os.path.join(train_dir,str(i)))
 			os.makedirs(os.path.join(test_dir,str(i)))
 	
 
 		counter_train,counter_test=0,0
-		for l1,l2,l3 in zip(open(file_images),open(file_train_test),open(file_classes)):
+		for l1,l2,l3,l4 in zip(open(file_images),open(file_train_test),open(file_classes),open(file_bbox)):
 			image_name=l1.split("\n")[0].split(" ")[1]
 			is_train = int(l2.split("\n")[0].split(" ")[1])
 			label    = numpy.int64(l3.split("\n")[0].split(" ")[1])-1
+
+			x,y,width,height= l4.split("\n")[0].split(" ")[1:]
+			x,y,width,height=numpy.float32(x).astype('int32'),numpy.float32(y).astype('int32'),numpy.float32(width).astype('int32'),numpy.float32(height).astype('int32')
+
 
 			image_dir= os.path.join(image_directory,image_name)
 			image = numpy.array(Image.open(image_dir))
@@ -225,6 +225,20 @@ class birds_caltech_2011(ImageFolder):
 
 
 class bbox_birds_caltech_2011(data.Dataset):
+	"""`Caltech 2011 Birds <http://www.vision.caltech.edu/visipedia/CUB-200-2011.html/>`_ Dataset.
+	    Args:
+        	root (string): Root directory of dataset where directory
+	            ``CUB_200_2011.tar.gz`` exists or will be saved to if download is set to True.
+        	partition (string): Select partition: train/test.
+	        transform (callable, optional): A function/transform that takes in an PIL image
+	            and returns a transformed version. E.g, ``transforms.RandomCrop``
+	        target_transform (callable, optional): A function/transform that takes in the
+        	    target and transforms it.
+	        download (bool, optional): If true, downloads the dataset from the internet and
+        	    puts it in root directory. If dataset is already downloaded, it is not
+	            downloaded again.
+	"""
+
 
 	def __init__(self,directory,partition,download=True, transform=None, target_transform=None):
 		super(bbox_birds_caltech_2011, self).__init__()
