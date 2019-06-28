@@ -41,7 +41,7 @@ For effiency, the dataset is processed one and store in a folder from which afte
 With this processing you can get competitive results on this task ~80% using pretrained models on ImageNet.
 
 
-####Object detection: 
+#### Object detection: 
 
 In this case the code returns the images, the labels and a numpy array containing the bounding boxes.
 
