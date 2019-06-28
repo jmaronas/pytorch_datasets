@@ -10,13 +10,17 @@ I create some unavailable pytorch datasets that I will try to push into the torc
 
 
 * [tinyImageNet](https://tiny-imagenet.herokuapp.com/)
+* [caltech birds](http://www.vision.caltech.edu/visipedia/CUB-200-2011.html) (a version for classification and a version for object detection)
 
 Uploaded soon: 
 
-* [caltech birds](http://www.vision.caltech.edu/visipedia/CUB-200-2011.html)
 * [standford cars](https://ai.stanford.edu/~jkrause/cars/car_dataset.html)
 
 
 ### tiny ImageNet
 
 An example of how to use tiny ImagetNet is provided in the file check_tiny_imagenet.py
+
+### Birds
+
+An example of how to use Birds is provided in the file check_birds.py
