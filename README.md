@@ -36,7 +36,7 @@ For classification each image is reshaped to have the same size.  The set of ope
 * 3) Reshape images to user-specified image shape using an interpolation method which is provided as argument.
 
 
-For effiency, the dataset is processed one and store in a folder from which after images are loaded. A checkpoint is introduced just in case something is wrong during this processing step, thus ensuring that it will correctly finished. If there is a problem during this step, you will be asked to erase the folder where your processed data is placed.
+For efficiency, the dataset is processed once and store in a folder from which after, images are loaded. A checkpoint is introduced just in case something is wrong during this processing step, thus ensuring that it will correctly finished. If there is a problem during this step, you will be asked to erase the folder where your processed data is placed.
 
 With this processing you can get competitive results on this task ~80% using pretrained models on ImageNet.
 
