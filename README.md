@@ -11,11 +11,7 @@ I create some unavailable pytorch datasets that I will try to push into the torc
 
 * [tinyImageNet](https://tiny-imagenet.herokuapp.com/)
 * [caltech birds](http://www.vision.caltech.edu/visipedia/CUB-200-2011.html) (a version for classification and a version for object detection)
-
-Uploaded soon: 
-
 * [standford cars](https://ai.stanford.edu/~jkrause/cars/car_dataset.html)
-
 
 ### tiny ImageNet
 
@@ -46,5 +42,14 @@ With this processing you can get competitive results on this task ~80% using pre
 In this case the code returns the images, the labels and a numpy array containing the bounding boxes.
 
 The dataset contains a method: dataset.default_collate which can be passed directly to a dataloader.
+
+
+### TODO: 
+
+* documentation for cars
+* refactor some code, for instance repeated functions
+* clearly state what is neede to be incorporated in the current functions from torchvision 
+* attributes from cars class
+      
 
 
