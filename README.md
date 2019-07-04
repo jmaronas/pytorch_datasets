@@ -4,7 +4,7 @@ I create some unavailable pytorch datasets that I will try to push into the torc
 
 ## Compatibility
 
-  These datasets are preparared for at least torchvision 0.2.2 and require scipy version 1.2.1. They have been programmed 
+  These datasets are preparared for at least torchvision 0.2.2 and require scipy version 1.2.1 and progress module to be installed. They have been programmed 
   reusing code and following the same structure as other provided datasets. Basically, functions that appear in torchvision 0.3.0
   but not in torchvision 0.2.2 has been directly copied into a file named common.py. With this, incorporating these datasets in the main project is straightforward.
 
@@ -45,7 +45,7 @@ The dataset contains a method: dataset.default_collate which can be passed direc
 
 ### Cars
 
-This dataset contains images of cars with different shapes. An example of how to use Cars is provided in the file check_birds.py
+This dataset contains images of cars with different shapes. An example of how to use Cars is provided in the file check_cars.py
 
 #### Classification: 
 
@@ -77,15 +77,16 @@ The dataset contains a method: dataset.default_collate which can be passed direc
 In order to use this datasets we need a slight modification in the torchvision project version 0.3.0. Function ``` def _is_gzip(filename)  ``` available at torchvision.datasets.utils has to be changed from:
 
 ```
-def _is_gzip(filename):
-        return filename.endswith(".gz")
+def _is_targz(filename):
+	return filename.endswith(".tar.gz")
+
 ```
 
 to
 
 ```
-def _is_gzip(filename):
-        return filename.endswith(".gz") and not filename.endswith(".tar.gz")
+def _is_targz(filename):
+        return filename.endswith(".tar.gz") or filename.endswith(".tgz")
 ```
 
 

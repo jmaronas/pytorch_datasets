@@ -80,7 +80,7 @@ class birds_caltech_2011(ImageFolder):
 		#check if the process correctly finished
 		path_file=os.path.join(self.processed_directory,'.correctly_processed')
 		if not os.path.isfile(path_file):
-			raise Exception("You seem to already have a folder named {} where processing did not succed. Erase folder and re-run".format(self.processed_directory))	
+			raise Exception("You seem to already have a folder named {} where processing did not succed. Erase folder {} and re-run".format(self.processed_directory,os.path.join('processed',str(self.image_shape),self.interpolation,self.padding)))	
 
 		return True
 
