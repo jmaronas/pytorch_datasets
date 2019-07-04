@@ -1,48 +1,10 @@
 import torch
 import torch.utils.data as data
-
-from torchvision.datasets.utils import * #check_integrity , download_and_extract_archive, extract_archive and so on
-from torchvision.datasets.folder import ImageFolder
-
 from scipy.misc import imresize,imsave
 from PIL import Image
 import os
-import zipfile
 
-
-def _is_zip(filename):
-    return filename.endswith(".zip")
-
-
-def extract_archive(from_path, to_path=None, remove_finished=False):
-    if to_path is None:
-        to_path = os.path.dirname(from_path)
-
-    if _is_zip(from_path):
-        with zipfile.ZipFile(from_path, 'r') as z:
-            z.extractall(to_path)
-    else:
-        raise ValueError("Extraction of {} not supported".format(from_path))
-
-    if remove_finished:
-        os.remove(from_path)
-
-def download_and_extract_archive(url, download_root, extract_root=None, filename=None,
-                                 md5=None, remove_finished=False):
-	download_root = os.path.expanduser(download_root)
-	if extract_root is None:
-		 extract_root = download_root
-	if not filename:
-		filename = os.path.basename(url)
-
-	download_url(url, download_root, filename, md5)
-
-	archive = os.path.join(download_root, filename)
-
-	print("Extracting {} to {}".format(archive, extract_root))
-	extract_archive(archive, extract_root, remove_finished)
-
-
+from common import *
 
 #TODO: return bounding boxes, allow for other types of interpolations
 class tiny_ImageNet(ImageFolder):
